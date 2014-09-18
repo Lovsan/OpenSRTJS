@@ -52,14 +52,14 @@ function searchEpisode(data, cb) {
 			if(err) return cb(err, null);
 			var subs = {};
 			async.eachSeries(res.data, function(sub, callback) {
-				if(sub.SubFormat != "srt")  return callback();
+				if(sub.SubFormat != "srt","sub") return callback(); //added .sub extension here too
 				if(data.season && data.episode) {// definitely an episode check 
 					if(parseInt(sub.SeriesIMDBParent, 10) != parseInt(data.imdbid.replace("tt", ""), 10)) return callback();
 					if(sub.SeriesSeason != data.season) return callback();
 					if(sub.SeriesEpisode != data.episode) return callback();
 				}
 				var tmp = {};
-				tmp.url = sub.SubDownloadLink.replace(".gz", ".srt");
+				tmp.url = sub.SubDownloadLink.replace(".gz", ".srt", ".sub"); // added sub extnsion here.
 				tmp.lang = sub.ISO639;
 				tmp.downloads = sub.SubDownloadsCnt;
 				tmp.score = 0;
